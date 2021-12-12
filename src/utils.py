@@ -28,17 +28,30 @@ class BaseLogger:
         return logger
 
 
-class ModelUpdate(BaseLogger):
+class ModelManager(BaseLogger):
 
-    def __init__(self, model:Pipeline) -> None:
+    def __init__(self,
+        model:Pipeline=None,
+        path=None) -> None:
+        """Model manager initizalization
+        """
         super().__init__()
-        self.model = model
+        if model:
+            self.model = model
+        else:
+            self.model = self.load(path)
 
     def update(self) -> None:
-        """Create .pkl file with the new trained model
+        """Creates .pkl file with the new trained model
         """
         self.logger.info("Updating models in models/model.pkl")
         joblib.dump(self.model, 'models/model.pkl')
+
+    def load(self, path) -> Pipeline:
+        """Returns loaded .pkl model
+        """
+        self.logger.info(f"Loading {path} binary...")
+        return joblib.load(path)
 
 
 class ModelReport(BaseLogger):

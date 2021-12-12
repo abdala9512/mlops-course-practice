@@ -1,7 +1,7 @@
 """End to end pipeline processing"""
 
 from trainer import Trainer, HyperTuner
-from utils import BaseLogger, ModelUpdate, ModelReport
+from utils import BaseLogger, ModelManager, ModelReport
 from data_builder import DataBuilder
 
 class Process(BaseLogger):
@@ -20,7 +20,7 @@ class Process(BaseLogger):
 
         self.data_builder.execute()
         model  = self.trainer.tune()
-        ModelUpdate(model=model).update()
+        ModelManager(model=model).update()
 
         # Predictions report
         ModelReport(model=self.trainer).generate_report(obj_pred=model)
