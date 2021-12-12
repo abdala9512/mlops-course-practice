@@ -2,3 +2,5 @@
     url = gs://mlops-data/datasets
 ['remote "model-dvc"']
     url = gs://mlops-data/models
+['remote "mlops-dvc"']
+    url = gs://mlops-data/data
