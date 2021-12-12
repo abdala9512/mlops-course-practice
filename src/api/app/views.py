@@ -1,6 +1,6 @@
 from .models import PredictionRequest
 from .api_utils import transform_to_dataframe
-from utils import ModelManager
+from src.utils import ModelManager
 
 model = ModelManager(path = 'models/model.pkl')
 
