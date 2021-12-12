@@ -3,6 +3,8 @@ on: [push, pull_request]
 jobs:
   testing-api:
     runs-on: ${{ matrix.os }}
+    env:
+      PYTHONPATH: ${PYTHONPATH}:./src
 
     strategy:
       matrix:
