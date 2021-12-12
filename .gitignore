@@ -4,6 +4,8 @@
 *.xlsx
 /*.json
 *.pkl
+predictions_movies.png
+model_report.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

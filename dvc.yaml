@@ -1,0 +1,3 @@
+stages:
+  process:
+    cmd: python src/execution.py

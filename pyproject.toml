@@ -10,6 +10,8 @@ python = ">=3.9,<4.0.0"
 pandas = "^1.3.4"
 scikit-learn = "^1.0.1"
 dvc = {extras = ["gs"], version = "^2.9.2"}
+matplotlib = "^3.5.1"
+seaborn = "^0.11.2"
 
 [tool.poetry.dev-dependencies]
 jupyterlab = "^3.2.5"

@@ -117,10 +117,10 @@ class HyperTuner(Trainer):
             return_train_score=True
         )
 
-        train_score = np.mean(final_model['train_score'])
-        test_score  = np.mean(final_model['test_score'])
+        self.train_score = np.mean(final_model['train_score'])
+        self.test_score  = np.mean(final_model['test_score'])
 
-        self.logger.info(f"Train Score of optimized model: {train_score}")
-        self.logger.info(f"Test Score of optimized model: {test_score}")
+        self.logger.info(f"Train Score of optimized model: {self.train_score}")
+        self.logger.info(f"Test Score of optimized model: {self.test_score}")
 
-        return final_model
+        return tuner.best_estimator_
