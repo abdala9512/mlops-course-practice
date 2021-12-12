@@ -1,0 +1,20 @@
+name: Testing API
+on: [push, pull_request]
+jobs:
+  testing-api:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+
+      - name: Creating and activating virtualenv
+        run: |
+          poetry install
+          poetry shell
+
+      - name: Test API
+        run: |
+          pytest tests/api_tests.py
