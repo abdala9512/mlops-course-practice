@@ -14,10 +14,21 @@ on:
 
 jobs:
   continuous_training:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python_version: [3.9]
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v2
+
+      - name: Set python with  ${{ matrix.python_version }} version
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python_version }}
 
       - name: Install Poetry
         uses: snok/install-poetry@v1
@@ -42,7 +53,7 @@ jobs:
 
           dvc repro -f
           echo "Training complete"
-          dvc add models/model.pkl.dvc -r model-dvc --to-remote
+          dvc add models/model.pkl -r model-dvc --to-remote
           dvc push models/model.pkl.dvc -r model-dvc
 
       - name: Continuous Machine Learning report
