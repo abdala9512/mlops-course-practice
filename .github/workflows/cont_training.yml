@@ -30,7 +30,7 @@ jobs:
         run: |
           poetry install
           export GOOGLE_APPLICATION_CREDENTIALS=$(python src/set_credentials.py)
-          
+
           dvc pull models/model.pkl.dvc -r model-dvc
           dvc unprotect models/model.pkl
 
@@ -43,13 +43,13 @@ jobs:
           dvc add models/model.pkl.dvc -r model-dvc --to-remote
           dvc push models/model.pkl.dvc -r model-dvc
 
-    - name: Continuous Machine Learning report
-      uses: iterative/setup-cml@v1
+      - name: Continuous Machine Learning report
+        uses: iterative/setup-cml@v1
 
-    - name: Publish metrics
-      env:
-        REPO-TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      run: |
-        cat report.txt > report.md
-        cml-publish prediction_movies.png --md  >> report.md
-        cml-send-comment report.md
+      - name: Publish metrics
+        env:
+         REPO-TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cat report.txt > report.md
+          cml-publish prediction_movies.png --md  >> report.md
+          cml-send-comment report.md
