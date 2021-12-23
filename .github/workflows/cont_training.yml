@@ -1,6 +1,8 @@
 name: Continuous training workflow
 
 on:
+  push:
+    branches: [main, dev-modeling]
   schedule:
     - cron: '0 */12 * * *'
   workflow_dispatch:
