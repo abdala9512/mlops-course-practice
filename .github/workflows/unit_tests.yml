@@ -40,4 +40,6 @@ jobs:
           dvc pull data/movies.csv.dvc -r mlops-dvc
           dvc pull data/opening_gross.csv.dvc -r mlops-dvc
 
+          dvc pull models/model.pkl.dvc -r model-dvc
+
           python -m pytest tests/api_tests.py --cov-report term-missing --cov=tests
