@@ -61,8 +61,8 @@ jobs:
 
       - name: Publish metrics
         env:
-         REPO-TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          cat model_report.txt > report.md
+          cat model_report.txt >> report.md
           cml-publish predictions_movies.png --md  >> report.md
           cml-send-comment report.md
