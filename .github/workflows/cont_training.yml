@@ -41,15 +41,15 @@ jobs:
         env:  
           SERVICE_ACCOUNT_KEY: ${{ secrets.SERVICE_ACCOUNT_KEY }}
         run: |
-          poetry install
+          poetry install --no-interaction
           export GOOGLE_APPLICATION_CREDENTIALS=$(python src/set_credentials.py)
           source .venv/bin/activate
           dvc pull models/model.pkl.dvc -r model-dvc
           dvc unprotect models/model.pkl
 
-          dvc pull data/finantials.csv.dvc -r model-dvc
-          dvc pull data/movies.csv.dvc -r model-dvc
-          dvc pull data/opening_gross.csv.dvc -r model-dvc
+          dvc pull data/finantials.csv.dvc -r mlops-dvc
+          dvc pull data/movies.csv.dvc -r mlops-dvc
+          dvc pull data/opening_gross.csv.dvc -r mlops-dvc
 
           dvc repro -f
           echo "Training complete"
