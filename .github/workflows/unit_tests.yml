@@ -32,4 +32,4 @@ jobs:
       - name: Test API
         run: |
           source .venv/bin/activate
-          pytest tests/api_tests.py
+          python -m pytest tests/api_tests.py --cov-report term-missing --cov=tests

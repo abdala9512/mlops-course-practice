@@ -3,7 +3,6 @@
 import logging
 import sys
 import joblib
-
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.pipeline import Pipeline
@@ -65,13 +64,13 @@ class ModelReport(BaseLogger):
         
         # Metrics report
         with open('model_report.txt', 'w') as report_file:
-            report_file.write(">>> Model pipeline description ----------------------------")
+            report_file.write("# Model pipeline description ----------------------------")
 
             for key, value in self.model.pipeline.named_steps.items():
-                report_file.write(f">>> {key}:{value.__repr__()}" + "\n")
+                report_file.write(f" {key}:{value.__repr__()}" + "\n")
 
-            report_file.write(f">>> Train Score: {self.model.train_score} \n")
-            report_file.write(f">>> Test Score: {self.model.test_score} \n")
+            report_file.write(f"## Train Score: {self.model.train_score} \n")
+            report_file.write(f"## Test Score: {self.model.test_score} \n")
 
         # Plot report
         predictions = obj_pred.predict(self.model.X_test)
