@@ -1,0 +1,68 @@
+name: Continuous training workflow
+
+on:
+  push:
+    branches: [main, dev-modeling]
+  schedule:
+    - cron: '0 */12 * * *'
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: Why to run this?
+        required: false
+        default: Running Continuous training
+
+jobs:
+  continuous_training:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python_version: [3.9]
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+
+      - name: Set python with  ${{ matrix.python_version }} version
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python_version }}
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+          installer-parallel: true
+
+      - name: Train model
+        env:  
+          SERVICE_ACCOUNT_KEY: ${{ secrets.SERVICE_ACCOUNT_KEY }}
+        run: |
+          poetry install --no-interaction
+          export GOOGLE_APPLICATION_CREDENTIALS=$(python src/set_credentials.py)
+          source .venv/bin/activate
+          dvc pull models/model.pkl.dvc -r model-dvc
+          dvc unprotect models/model.pkl
+
+          dvc pull data/finantials.csv.dvc -r mlops-dvc
+          dvc pull data/movies.csv.dvc -r mlops-dvc
+          dvc pull data/opening_gross.csv.dvc -r mlops-dvc
+
+          dvc repro -f
+          echo "Training complete"
+          dvc add models/model.pkl -r model-dvc --to-remote
+          dvc push models/model.pkl.dvc -r model-dvc
+
+      - name: Continuous Machine Learning report
+        uses: iterative/setup-cml@v1
+
+      - name: Publish metrics
+        env:
+         REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cat model_report.txt >> report.md
+          cml-publish predictions_movies.png --md  >> report.md
+          cml-send-comment report.md

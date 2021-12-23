@@ -1,0 +1,45 @@
+name: Testing API
+on: [push, pull_request]
+jobs:
+  testing-api:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python_version: [3.9]
+
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v2
+
+      - name: Set python with  ${{ matrix.python_version }} version
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python_version }}
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+          installer-parallel: true
+
+      - name: Creating and activating virtualenv
+        run: |
+          poetry install --no-interaction
+
+      - name: Test API
+        env:  
+          SERVICE_ACCOUNT_KEY: ${{ secrets.SERVICE_ACCOUNT_KEY }}  
+        run: |
+          source .venv/bin/activate
+          export GOOGLE_APPLICATION_CREDENTIALS=$(python src/set_credentials.py)
+
+          dvc pull data/finantials.csv.dvc -r mlops-dvc
+          dvc pull data/movies.csv.dvc -r mlops-dvc
+          dvc pull data/opening_gross.csv.dvc -r mlops-dvc
+
+          dvc pull models/model.pkl.dvc -r model-dvc
+
+          python -m pytest tests/api_tests.py --cov-report term-missing --cov=tests

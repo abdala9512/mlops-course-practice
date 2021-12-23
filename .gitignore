@@ -1,3 +1,13 @@
+# data
+
+*.csv
+*.xlsx
+/*.json
+*.pkl
+predictions_movies.png
+model_report.txt
+*.pkl
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
