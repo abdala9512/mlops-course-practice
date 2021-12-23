@@ -64,7 +64,7 @@ class ModelReport(BaseLogger):
         
         # Metrics report
         with open('model_report.txt', 'w') as report_file:
-            report_file.write("# Model pipeline description ----------------------------")
+            report_file.write("# Model pipeline description ---------------------------- \n")
 
             for key, value in self.model.pipeline.named_steps.items():
                 report_file.write(f" {key}:{value.__repr__()}" + "\n")
