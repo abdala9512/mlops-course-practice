@@ -10,8 +10,7 @@ class Process(BaseLogger):
     def __init__(self):
         super().__init__()
         self.data_builder = DataBuilder()
-        self.trainer      = HyperTuner(target='worldwide_gross')
-
+        self.trainer = None
     def __run_end_to_end_pipeline(self):
         """End to end pipeline execution
         """
@@ -19,6 +18,7 @@ class Process(BaseLogger):
         self.logger.info("Starting End to end pipeline processing ")
 
         self.data_builder.execute()
+        self.trainer      = HyperTuner(target='worldwide_gross')
         model  = self.trainer.tune()
         ModelManager(model=model).update()
 
