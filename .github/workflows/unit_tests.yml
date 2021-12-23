@@ -36,8 +36,8 @@ jobs:
           source .venv/bin/activate
           export GOOGLE_APPLICATION_CREDENTIALS=$(python src/set_credentials.py)
 
-          dvc pull data/finantials.csv.dvc -r model-dvc
-          dvc pull data/movies.csv.dvc -r model-dvc
-          dvc pull data/opening_gross.csv.dvc -r model-dvc
-          
+          dvc pull data/finantials.csv.dvc -r mlops-dvc
+          dvc pull data/movies.csv.dvc -r mlops-dvc
+          dvc pull data/opening_gross.csv.dvc -r mlops-dvc
+
           python -m pytest tests/api_tests.py --cov-report term-missing --cov=tests
